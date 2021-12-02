@@ -13,6 +13,11 @@
     <tbody>
 
         <tr *ngFor="let product of products">
+            <td>
+                <img src='{{product.imageUrl}}' 
+                alt="product image">
+            </td>
+
             <td> {{product.name}} </td>
 
             <td> {{product.unitPrice | currency: 'USD'}} </td>
