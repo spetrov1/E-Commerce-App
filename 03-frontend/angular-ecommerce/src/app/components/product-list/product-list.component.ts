@@ -6,10 +6,6 @@ import { tap } from "rxjs/operators";
 import { Product } from 'src/app/common/product';
 import { ProductsService } from 'src/app/common/products.service';
 
-interface Response {
-  products: Product[]
-}
-
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -34,9 +30,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
           id = +id;
         }
 
-        this.productsService.getProducts(id).subscribe(
-          (response: Response) => { 
-            this.products = response.products; 
+        this.productsService.getProductsByCategoryId(id).subscribe(
+          (response: Product[]) => { 
+            this.products = response; 
           }
         )
       }
