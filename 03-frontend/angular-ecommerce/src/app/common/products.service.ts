@@ -13,13 +13,12 @@ interface GetResponse {
 @Injectable({providedIn: 'root'})
 export class ProductsService {
 
-    readonly apiUrl = "http://localhost:8080/api/products";
+    readonly apiUrl = "http://localhost:8080/api/products/search/findByCategoryId?id=";
 
     constructor(private httpClient: HttpClient) {}
 
-    getProducts() {
-        // TODO change response's type
-        return this.httpClient.get<GetResponse>(this.apiUrl).pipe( 
+    getProducts(categoryId: number) {
+        return this.httpClient.get<GetResponse>(this.apiUrl + categoryId).pipe( 
             map( (response: GetResponse) => response._embedded)
         );
     }
