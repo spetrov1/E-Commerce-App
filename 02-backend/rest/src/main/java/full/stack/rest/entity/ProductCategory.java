@@ -20,7 +20,7 @@ public class ProductCategory {
     Long id;
 
     @Column(name = "category_name")
-    String categoryName;
+    String name;
 
     @OneToMany(mappedBy = "category")
     Set<Product> products;
