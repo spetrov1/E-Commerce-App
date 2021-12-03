@@ -4,6 +4,7 @@ import { PageNotFoundComponent } from "./components/page-not-found/page-not-foun
 import { ProductListComponent } from "./components/product-list/product-list.component";
 
 const routes: Routes = [
+    {path: 'search/:keyword', component: ProductListComponent},
     {path: 'category/:id', component: ProductListComponent},
     {path: 'products', component: ProductListComponent},
     {path: '', redirectTo: 'products', pathMatch: 'full'},

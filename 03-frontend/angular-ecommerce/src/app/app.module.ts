@@ -8,13 +8,15 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { MenuComponent } from './components/menu/menu.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductListComponent,
     PageNotFoundComponent,
-    MenuComponent
+    MenuComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

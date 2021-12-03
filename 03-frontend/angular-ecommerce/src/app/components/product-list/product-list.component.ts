@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { tap } from "rxjs/operators";
 
 import { Product } from 'src/app/common/product';
 import { ProductsService } from 'src/app/common/products.service';
@@ -14,6 +13,7 @@ import { ProductsService } from 'src/app/common/products.service';
 export class ProductListComponent implements OnInit, OnDestroy {
 
   products!: Product[];
+  searchMode!: boolean;
   subscription!: Subscription;
 
   constructor(
@@ -22,22 +22,42 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.activatedRoute.paramMap.subscribe(
-      (params: ParamMap) => {
-        let id: any = params.get('id');
-        if (!id) {
-          id = 1;
-        } else {
-          id = +id;
-        }
-
-        this.productsService.getProductsByCategoryId(id).subscribe(
-          (response: Product[]) => { 
-            this.products = response; 
-          }
-        )
-      }
-    )
+      () => this.listProducts()
+    );
     
+  }
+
+  listProducts() {
+    this.searchMode = this.activatedRoute.snapshot.paramMap.has('keyword');
+
+    if (this.searchMode) {
+      this.handleSearchProducts();
+    } 
+    else {
+      this.handleListProducts();
+    }
+  }
+
+  handleSearchProducts() {
+    const keyword = this.activatedRoute.snapshot.paramMap.get('keyword');
+    if (keyword) {
+      this.productsService.getProductsByNameContaining(keyword).subscribe(
+        (products: Product[]) => {
+          this.products = products;
+        }
+      );
+    }
+  }
+
+  handleListProducts() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.productsService.getProductsByCategoryId(+id).subscribe(
+        (response: Product[]) => { 
+          this.products = response; 
+        }
+      );
+    }
   }
   
   ngOnDestroy() {

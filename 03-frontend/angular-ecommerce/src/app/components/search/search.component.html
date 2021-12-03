@@ -1,0 +1,10 @@
+<form class="form-header" method="GET">
+    <input
+      #myInput
+      class="au-input au-input-xl"
+      type="text"
+      name="search"
+      placeholder="Search for data ..."
+    />
+    <button type="button" class="au-btn-submit" (click)="handleSearch(myInput.value)">Search</button>
+</form>
