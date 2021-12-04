@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { map } from 'rxjs/operators';
 import { Product } from "./product";
 
-interface GetResponse {
+export interface GetResponse {
     _embedded: any;
 
     page: {
@@ -26,9 +26,7 @@ export class ProductsService {
         const urlParameters = `?id=${categoryId}&page=${pageNumber}&size=${pageSize}`;
         url += urlParameters;
         
-        return this.httpClient.get<GetResponse>(url).pipe( 
-            map( (response: GetResponse) => response._embedded.products)
-        );
+        return this.httpClient.get<GetResponse>(url);
     }
 
     getCategories() {
@@ -43,9 +41,7 @@ export class ProductsService {
         const urlParameters = `?name=${name}&page=${pageNumber}&size=${pageSize}`;
         url += urlParameters;
         
-        return this.httpClient.get<GetResponse>(url).pipe(
-            map( (response: GetResponse) => response._embedded.products)
-        );
+        return this.httpClient.get<GetResponse>(url);
     }
 
     getProductById(id: number) {
@@ -58,9 +54,7 @@ export class ProductsService {
         const urlParameters = `?page=${pageNumber}&size=${pageSize}`;
         url += urlParameters;
 
-        return this.httpClient.get<GetResponse>(url).pipe(
-            map( (response: GetResponse) => response._embedded.products)
-        )
+        return this.httpClient.get<GetResponse>(url);
     }
 
 }

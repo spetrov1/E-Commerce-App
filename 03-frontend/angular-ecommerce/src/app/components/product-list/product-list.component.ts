@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { Product } from 'src/app/common/product';
-import { ProductsService } from 'src/app/common/products.service';
+import { GetResponse, ProductsService } from 'src/app/common/products.service';
 
 @Component({
   selector: 'app-product-list',
@@ -52,17 +52,24 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   listAllProducts() {
     this.productsService.getAllProducts(this.thePageNumber - 1, this.thePageSize).subscribe(
-      (products: Product[]) => this.products = products
+      this.processResponse()
     )
+  }
+
+  private processResponse() {
+    return (response: GetResponse) => {
+      this.products = response._embedded.products;
+      // this.thePageSize = response.page.size;
+      this.theTotalElements = response.page.totalElements;
+      // this.thePageNumber = response.page.number;
+    }
   }
 
   handleSearchProducts() {
     const keyword = this.activatedRoute.snapshot.paramMap.get('keyword');
     if (keyword) {
       this.productsService.getProductsByNameContaining(keyword, this.thePageNumber - 1, this.thePageSize)
-        .subscribe((products: Product[]) => {
-          this.products = products;
-        }
+        .subscribe(this.processResponse()
       );
     }
   }
@@ -71,17 +78,20 @@ export class ProductListComponent implements OnInit, OnDestroy {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.productsService.getProductsByCategoryId(+id, this.thePageNumber - 1, this.thePageSize)
-        .subscribe((response: Product[]) => { 
-          this.products = response; 
-        }
+        .subscribe(this.processResponse()
       );
     }
+  }
+
+  updatePageSize(event: any) {
+    const newPageSize = event.target.value;
+    this.thePageSize = newPageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
   }
   
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
-  
 
 }
