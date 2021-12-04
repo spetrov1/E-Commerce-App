@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map } from 'rxjs/operators';
+import { Product } from "./product";
 
 interface GetResponse {
     _embedded: any;
@@ -32,6 +33,18 @@ export class ProductsService {
         return this.httpClient.get<GetResponse>(url).pipe(
             map( (response: GetResponse) => response._embedded.products)
         );
+    }
+
+    getProductById(id: number) {
+        const url = `${this.baseUrl}/products/${id}`;
+        return this.httpClient.get<Product>(url);
+    }
+
+    getAllProducts() {
+        const url = this.baseUrl + "/products";
+        return this.httpClient.get<GetResponse>(url).pipe(
+            map( (response: GetResponse) => response._embedded.products)
+        )
     }
 
 }
