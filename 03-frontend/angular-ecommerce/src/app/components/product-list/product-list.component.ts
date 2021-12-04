@@ -14,6 +14,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   products!: Product[];
   searchMode!: boolean;
+
+  thePageNumber: number = 1;
+  thePageSize: number = 10;
+  theTotalElements: number = 100;
+
+
   subscription!: Subscription;
 
   constructor(
@@ -34,26 +40,38 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.handleSearchProducts();
     } 
     else {
-      this.handleListProducts();
+      const searchByCategory = this.activatedRoute.snapshot.paramMap.has('id');
+
+      if (searchByCategory) {
+        this.handleListProductsByCategory();
+      } else {
+        this.listAllProducts();
+      }
     }
+  }
+
+  listAllProducts() {
+    this.productsService.getAllProducts(this.thePageNumber - 1, this.thePageSize).subscribe(
+      (products: Product[]) => this.products = products
+    )
   }
 
   handleSearchProducts() {
     const keyword = this.activatedRoute.snapshot.paramMap.get('keyword');
     if (keyword) {
-      this.productsService.getProductsByNameContaining(keyword).subscribe(
-        (products: Product[]) => {
+      this.productsService.getProductsByNameContaining(keyword, this.thePageNumber - 1, this.thePageSize)
+        .subscribe((products: Product[]) => {
           this.products = products;
         }
       );
     }
   }
 
-  handleListProducts() {
+  handleListProductsByCategory() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
-      this.productsService.getProductsByCategoryId(+id).subscribe(
-        (response: Product[]) => { 
+      this.productsService.getProductsByCategoryId(+id, this.thePageNumber - 1, this.thePageSize)
+        .subscribe((response: Product[]) => { 
           this.products = response; 
         }
       );

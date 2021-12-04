@@ -5,6 +5,13 @@ import { Product } from "./product";
 
 interface GetResponse {
     _embedded: any;
+
+    page: {
+        size: number;
+        totalElements: number;
+        totalPages: number;
+        number: number;
+    }
 }
 
 @Injectable({providedIn: 'root'})
@@ -14,9 +21,12 @@ export class ProductsService {
 
     constructor(private httpClient: HttpClient) {}
 
-    getProductsByCategoryId(categoryId: number) {
-        const url = this.baseUrl + "/products/search/findByCategoryId?id=";
-        return this.httpClient.get<GetResponse>(url + categoryId).pipe( 
+    getProductsByCategoryId(categoryId: number, pageNumber: number, pageSize: number) {
+        let url = this.baseUrl + "/products/search/findByCategoryId";
+        const urlParameters = `?id=${categoryId}&page=${pageNumber}&size=${pageSize}`;
+        url += urlParameters;
+        
+        return this.httpClient.get<GetResponse>(url).pipe( 
             map( (response: GetResponse) => response._embedded.products)
         );
     }
@@ -28,8 +38,11 @@ export class ProductsService {
         );
     }
 
-    getProductsByNameContaining(name: string) {
-        const url = this.baseUrl + "/products/search/findByNameContaining?name=" + name;
+    getProductsByNameContaining(name: string, pageNumber: number, pageSize: number) {
+        let url = this.baseUrl + "/products/search/findByNameContaining";
+        const urlParameters = `?name=${name}&page=${pageNumber}&size=${pageSize}`;
+        url += urlParameters;
+        
         return this.httpClient.get<GetResponse>(url).pipe(
             map( (response: GetResponse) => response._embedded.products)
         );
@@ -40,8 +53,11 @@ export class ProductsService {
         return this.httpClient.get<Product>(url);
     }
 
-    getAllProducts() {
-        const url = this.baseUrl + "/products";
+    getAllProducts(pageNumber: number, pageSize: number) {
+        let url = this.baseUrl + "/products";
+        const urlParameters = `?page=${pageNumber}&size=${pageSize}`;
+        url += urlParameters;
+
         return this.httpClient.get<GetResponse>(url).pipe(
             map( (response: GetResponse) => response._embedded.products)
         )
