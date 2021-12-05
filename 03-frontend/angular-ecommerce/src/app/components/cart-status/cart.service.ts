@@ -11,6 +11,7 @@ export interface CartStatus {
 export class CartService {
     cartItems: CartItem[] = [];
 
+    // subject is emitting event when a status is being changed
     cartStatusSubject = new Subject<CartStatus>();
 
     // TODO pass either Product or CartItem
@@ -23,8 +24,7 @@ export class CartService {
             this.cartItems.push(item);
         }
 
-        const status: CartStatus = this.processCartStatus();
-        this.cartStatusSubject.next(status);
+        this.emitNewStatus();
     }
 
     processCartStatus() {
@@ -38,6 +38,15 @@ export class CartService {
         }
 
         return status;
+    }
+
+    removeById(itemId: number) {
+        this.cartItems = this.cartItems.filter(elem => elem.id !== itemId);
+    }
+
+    emitNewStatus() {
+        const status: CartStatus = this.processCartStatus();
+        this.cartStatusSubject.next(status);
     }
     
 
