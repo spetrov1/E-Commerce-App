@@ -80,7 +80,9 @@
               <b>Total Quantity: {{ itemsQuantity }} </b>
               <p>Shipping FREE</p>
               <b>Total Price: {{ itemsPrice | currency: "USD" }} </b><br />
-              <a href="checkout-page.html" class="primary-btn">Checkout</a>
+              <button class="primary-btn btn"> 
+                <a routerLink="/checkout"> Checkout </a>
+              </button>
             </td>
           </tr>
         </table>

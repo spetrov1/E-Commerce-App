@@ -1,0 +1,4 @@
+/* now when scrolling, the header is not covered from the form group headers */
+div.form-area {
+    z-index: 0;
+}
