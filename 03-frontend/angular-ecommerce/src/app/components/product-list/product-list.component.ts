@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CartItem } from 'src/app/common/cart-item';
 
 import { Product } from 'src/app/common/product';
 import { GetResponse, ProductsService } from 'src/app/common/products.service';
+import { CartService } from '../cart-status/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -24,7 +26,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   constructor(
     private productsService: ProductsService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private cartService: CartService) { }
 
   ngOnInit(): void {
     this.subscription = this.activatedRoute.paramMap.subscribe(
@@ -88,6 +91,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.thePageSize = newPageSize;
     this.thePageNumber = 1;
     this.listProducts();
+  }
+
+  onAddToCart(product: Product) {
+    const item = new CartItem(product);
+    this.cartService.addItem(item);
   }
   
   ngOnDestroy() {
