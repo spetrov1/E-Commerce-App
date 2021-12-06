@@ -6,87 +6,87 @@
 
           <div class="row">
             <label class="col-md-4"> First Name: </label>
-            <input FormControlName="firstName" type="text" />
+            <input formControlName="firstName" type="text" />
           </div>
 
           <div class="row">
             <label class="col-md-4"> Last Name: </label>
-            <input FormControlName="lastName" type="text" />
+            <input formControlName="lastName" type="text" />
           </div>
 
           <div class="row">
             <label class="col-md-4"> Email Address: </label>
-            <input FormControlName="emailAddress" type="text" />
+            <input formControlName="emailAddress" type="text" />
           </div>
 
         </div>
 
 
-        <div FormGroupName="shippingAddress" class="form-area">
+        <div formGroupName="shippingAddress" class="form-area">
             <h3> Shipping address </h3>
 
             <div class="row">
                 <label class="col-md-4"> Country: </label>
-                <input FormControlName="country" type="text" />
+                <input formControlName="country" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Street: </label>
-                <input FormControlName="street" type="text" />
+                <input formControlName="street" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> City: </label>
-                <input FormControlName="city" type="text" />
+                <input formControlName="city" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> State / Province: </label>
-                <input FormControlName="state" type="text" />
+                <input formControlName="state" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Zip code / Postal code: </label>
-                <input FormControlName="zipCode" type="text" />
+                <input formControlName="zipCode" type="text" />
             </div>
         </div>
 
 
-        <div FormGroupName="billingAddress" class="form-area">
+        <div formGroupName="billingAddress" class="form-area">
             <h3> Billing address </h3>
 
             <div class="row">
                 <label class="col-md-4"> Country: </label>
-                <input FormControlName="country" type="text" />
+                <input formControlName="country" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Street: </label>
-                <input FormControlName="street" type="text" />
+                <input formControlName="street" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> City: </label>
-                <input FormControlName="city" type="text" />
+                <input formControlName="city" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> State / Province: </label>
-                <input FormControlName="state" type="text" />
+                <input formControlName="state" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Zip code / Postal code: </label>
-                <input FormControlName="zipCode" type="text" />
+                <input formControlName="zipCode" type="text" />
             </div>
         </div>
 
-        <div FormGroupName="creditCard" class="form-area">
+        <div formGroupName="creditCard" class="form-area">
             <h3> Credit card </h3>
 
             <div class="row">
                 <label class="col-md-4"> Card type: </label>
-                <select FormControlName="cardType" type="text">
+                <select formControlName="cardType" type="text">
                     <option> Visa </option>
                     <option> Mastercard </option>
                 </select>
@@ -94,30 +94,39 @@
 
             <div class="row">
                 <label class="col-md-4"> Card name: </label>
-                <input FormControlName="cardName" type="text" />
+                <input formControlName="cardName" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Card number: </label>
-                <input FormControlName="cardNumber" type="text" />
+                <input formControlName="cardNumber" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Security code: </label>
-                <input FormControlName="securityCode" type="text" />
+                <input formControlName="securityCode" type="text" />
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Expiration month: </label>
-                <select FormControlName="expirationMonth" type="text">
-                    <option> TODO </option>
+                <select 
+                    formControlName="expirationMonth" 
+                    type="text"
+                    >
+                    <option disabled></option>
+                    <option *ngFor="let month of creditCardMonths"> {{month}} </option>
                 </select>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Expiration year: </label>
-                <select FormControlName="expirationYear" type="text">
-                    <option> TODO </option>
+                <select
+                    (change)="handleCreditCardDropdownsPopulation()" 
+                    formControlName="expirationYear" 
+                    type="text"
+                    >
+                    <option disabled></option>
+                    <option *ngFor="let year of creditCardYears"> {{year}} </option>
                 </select>
             </div>
         </div>
