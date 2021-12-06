@@ -14,7 +14,6 @@ export class CartService {
     // subject is emitting event when a status is being changed
     cartStatusSubject = new Subject<CartStatus>();
 
-    // TODO pass either Product or CartItem
     addItem(item: CartItem) {
         const itemAlreadyAdded = this.cartItems.find(currItem => currItem.id === item.id);
 

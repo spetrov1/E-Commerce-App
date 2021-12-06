@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Country } from 'src/app/common/country';
+import { State } from 'src/app/common/state';
 import { FormService } from 'src/app/services/form.service';
 import { CartService } from '../cart-status/cart.service';
 
@@ -17,6 +19,10 @@ export class CheckoutComponent implements OnInit {
   creditCardMonths: number[] = [];
   creditCardYears: number[] = [];
 
+  countries: Country[] = [];
+  shippingAddressStates: State[] = [];
+  billingAddressStates: State[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private cartService: CartService,
@@ -31,6 +37,23 @@ export class CheckoutComponent implements OnInit {
 
     this.populateCreditCardYears();
     this.populateCreditCardMonths(new Date().getMonth());
+
+    this.formService.getAllCountries().subscribe(
+      (countries: Country[]) => this.countries = countries
+    )
+  }
+
+  populateStates(formGroupName: string) {
+    const country: Country = this.checkoutForm.get(formGroupName)!.value.country;
+    this.formService.getAllStatesByCountryCode(country.code).subscribe(
+      (states: State[]) => {
+        if (formGroupName === "shippingAddress") {
+          this.shippingAddressStates = states;
+        } else {
+          this.billingAddressStates = states;
+        }
+      }
+    )
   }
 
   populateCreditCardYears() {
@@ -56,6 +79,17 @@ export class CheckoutComponent implements OnInit {
     } else {
       const januaryMonth = 1;
       this.populateCreditCardMonths(januaryMonth);
+    }
+  }
+
+  // checkbox to copy inputed ShoppingAddress to BillingAddress 
+  handleCheckboxChangedValue(eventTarget: EventTarget) {
+    const isChecked = (<HTMLInputElement>eventTarget).checked;
+    if (isChecked) {
+      const temp = this.checkoutForm.get('shippingAddress');
+      this.checkoutForm.get('billingAddress')?.setValue(temp?.value);
+      
+      this.billingAddressStates = this.shippingAddressStates;
     }
   }
 

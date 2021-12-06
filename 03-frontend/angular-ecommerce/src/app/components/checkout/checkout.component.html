@@ -1,6 +1,7 @@
 <div class="main-content page-m">
     <div class="container-fluid">
       <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        
         <div formGroupName="customer" class="form-area">
           <h3>Customer</h3>
 
@@ -21,13 +22,18 @@
 
         </div>
 
-
         <div formGroupName="shippingAddress" class="form-area">
             <h3> Shipping address </h3>
 
             <div class="row">
                 <label class="col-md-4"> Country: </label>
-                <input formControlName="country" type="text" />
+                <select (change)="populateStates('shippingAddress')" formControlName="country" type="text">
+                    <option disabled></option>
+                    <option 
+                        *ngFor="let tempCountry of countries"
+                        [ngValue]="tempCountry"    
+                    > {{tempCountry.name}} </option>
+                </select>
             </div>
 
             <div class="row">
@@ -42,7 +48,12 @@
 
             <div class="row">
                 <label class="col-md-4"> State / Province: </label>
-                <input formControlName="state" type="text" />
+                <select formControlName="state">
+                    <option 
+                        *ngFor="let tempState of shippingAddressStates"
+                        [ngValue]="tempState"
+                        > {{tempState.name}} </option>
+                </select>
             </div>
 
             <div class="row">
@@ -51,13 +62,31 @@
             </div>
         </div>
 
+        <div class="form-check" (change)="handleCheckboxChangedValue($event.target!)">
+            <input class="form-check-input" type="checkbox" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Copy ShippingAddress data to BillingAddress
+            </label>
+        </div>
+
+        <br> <br>
 
         <div formGroupName="billingAddress" class="form-area">
             <h3> Billing address </h3>
 
             <div class="row">
                 <label class="col-md-4"> Country: </label>
-                <input formControlName="country" type="text" />
+                <select 
+                    (change)="populateStates('billingAddress')" 
+                    formControlName="country" 
+                    type="text"
+                >
+                    <option disabled></option>
+                    <option 
+                        *ngFor="let tempCountry of countries" 
+                        [ngValue]="tempCountry"
+                    > {{tempCountry.name}} </option>
+                </select>
             </div>
 
             <div class="row">
@@ -72,7 +101,12 @@
 
             <div class="row">
                 <label class="col-md-4"> State / Province: </label>
-                <input formControlName="state" type="text" />
+                <select formControlName="state">
+                    <option 
+                        *ngFor="let tempState of billingAddressStates"
+                        [ngValue]="tempState"
+                        > {{tempState.name}} </option>
+                </select>
             </div>
 
             <div class="row">

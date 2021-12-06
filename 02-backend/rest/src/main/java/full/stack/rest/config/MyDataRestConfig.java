@@ -35,11 +35,13 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         forbidMethods(config, Country.class);
 
-        // forbidMethods(config, State.class);
+        forbidMethods(config, State.class);
 
-        // TODO forbid unsupportedMethods also for Country and State classes
-
-        config.exposeIdsFor(Product.class, ProductCategory.class);
+        config.exposeIdsFor(
+                Product.class,
+                ProductCategory.class,
+                Country.class,
+                State.class);
     }
 
     private void forbidMethods(RepositoryRestConfiguration config, Class temp) {
