@@ -9,9 +9,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "product_category")
-// TODO add @Data instead @Getter and @Setter
 @Getter
 @Setter
+// TODO why using @Getter and @Setter instead of @Data ?
+// I suggest because ot set<Product> field ...
 public class ProductCategory {
 
     @Id

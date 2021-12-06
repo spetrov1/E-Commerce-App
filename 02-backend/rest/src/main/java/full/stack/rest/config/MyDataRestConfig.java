@@ -1,7 +1,9 @@
 package full.stack.rest.config;
 
+import full.stack.rest.entity.Country;
 import full.stack.rest.entity.Product;
 import full.stack.rest.entity.ProductCategory;
+import full.stack.rest.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -19,26 +21,34 @@ import java.util.Set;
 public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     HttpMethod[] unsupportedMethods = { HttpMethod.DELETE, HttpMethod.PUT, HttpMethod.POST };
-    EntityManager entityManager;
+    // EntityManager entityManager;
 
-    @Autowired
-    MyDataRestConfig(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    // @Autowired
+    // MyDataRestConfig(EntityManager entityManager) {this.entityManager = entityManager;
+    // }
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure( ((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods)) )
-                .withCollectionExposure( ((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods)));
+        forbidMethods(config, Product.class);
 
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure( ((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods)) )
-                .withCollectionExposure( ((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods)));
+        forbidMethods(config, ProductCategory.class);
+
+        forbidMethods(config, Country.class);
+
+        // forbidMethods(config, State.class);
+
+        // TODO forbid unsupportedMethods also for Country and State classes
 
         config.exposeIdsFor(Product.class, ProductCategory.class);
     }
+
+    private void forbidMethods(RepositoryRestConfiguration config, Class temp) {
+        config.getExposureConfiguration()
+                .forDomainType(temp)
+                .withItemExposure( ((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods)) )
+                .withCollectionExposure( ((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods)));
+    }
+
+
 
 }
