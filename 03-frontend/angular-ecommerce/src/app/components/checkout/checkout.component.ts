@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { FormService } from 'src/app/services/form.service';
@@ -22,6 +22,25 @@ export class CheckoutComponent implements OnInit {
   countries: Country[] = [];
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
+
+  get firstName() { return this.checkoutForm.get('customer.firstName');}
+  get lastName() { return this.checkoutForm.get('customer.lastName');}
+  get email() { return this.checkoutForm.get('customer.email');}
+
+  get shippingAddressCountry() { return this.checkoutForm.get('shippingAddress.country');}
+  get shippingAddressStreet() { return this.checkoutForm.get('shippingAddress.street'); }
+  get shippingAddressCity() { return this.checkoutForm.get('shippingAddress.city'); }
+  get shippingAddressState() { return this.checkoutForm.get('shippingAddress.state'); }
+  get shippingAddressZipCode() { return this.checkoutForm.get('shippingAddress.zipCode'); }
+
+  get billingAddressCountry() { return this.checkoutForm.get('billingAddress.country');}
+  get billingAddressStreet() { return this.checkoutForm.get('billingAddress.street'); }
+  get billingAddressCity() { return this.checkoutForm.get('billingAddress.city'); }
+  get billingAddressState() { return this.checkoutForm.get('billingAddress.state'); }
+  get billingAddressZipCode() { return this.checkoutForm.get('billingAddress.zipCode'); }
+
+
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -93,40 +112,68 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  // Custom Validator
+
+  // Option 1:
+  // notOnlyWhitespaces(): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     if (control.value.trim().length === 0) {
+  //       return { "notOnlyWhitespaces": true};
+  //     }
+  //     return null;
+  //   }
+  // }
+
+  // Custom Validator
+  // Option 2: More Readable
+  notOnlyWhitespaces(control: AbstractControl): ValidationErrors | null {
+    if (control.value.trim().length === 0) {
+      return { notOnlyWhitespaces: true};
+    }
+    return null;
+  }
+
   private connectCodeToForm() {
     this.checkoutForm = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        emailAddress: ['']
+        firstName: new FormControl('', [Validators.required, this.notOnlyWhitespaces]),
+        lastName: new FormControl('', Validators.required),
+        email: new FormControl('', [Validators.required, Validators.email])
       }),
       shippingAddress: this.formBuilder.group({
-        country: [''],
-        street: [''],
-        city: [''],
-        state: [''],
-        zipCode: ['']
+        country: new FormControl('', Validators.required),
+        street: new FormControl('', Validators.required),
+        city: new FormControl('', Validators.required),
+        state: new FormControl('', Validators.required),
+        zipCode: new FormControl('', Validators.required)
       }),
       billingAddress: this.formBuilder.group({
-        country: [''],
-        street: [''],
-        city: [''],
-        state: [''],
-        zipCode: ['']
+        country: new FormControl('', Validators.required),
+        street: new FormControl('', Validators.required),
+        city: new FormControl('', Validators.required),
+        state: new FormControl('', Validators.required),
+        zipCode: new FormControl('', Validators.required)
       }),
       creditCard: this.formBuilder.group({
-        cardType: [''],
-        cardName: [''],
-        cardNumber: [''],
-        securityCode: [''],
-        expirationMonth: [''],
-        expirationYear: ['']
+        type: new FormControl('', Validators.required),
+        name: new FormControl('', [Validators.required, this.notOnlyWhitespaces]),
+        number: new FormControl('', [Validators.required, Validators.pattern("[0-9]{16}"), this.notOnlyWhitespaces]),
+        securityCode: new FormControl('', [Validators.required, Validators.pattern("[0-9]{3}"), this.notOnlyWhitespaces]),
+        expirationMonth: new FormControl('', Validators.required),
+        expirationYear: new FormControl('', Validators.required)
       })
     });
   }
 
+  get creditCardType() { return this.checkoutForm.get('creditCard.type'); }
+  get creditCardName() { return this.checkoutForm.get('creditCard.name'); }
+  get creditCardNumber() { return this.checkoutForm.get('creditCard.number'); }
+  get creditCardSecurityCode() { return this.checkoutForm.get('creditCard.securityCode'); }
+  get creditCardExpirationMonth() { return this.checkoutForm.get('creditCard.expirationMonth'); }
+  get creditCardExpirationYear() { return this.checkoutForm.get('creditCard.expirationYear'); }
+
   onSubmit() {
-    console.log(this.checkoutForm);
+    this.checkoutForm.markAllAsTouched();
   }
 
 }

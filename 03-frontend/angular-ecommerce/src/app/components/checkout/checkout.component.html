@@ -8,16 +8,45 @@
           <div class="row">
             <label class="col-md-4"> First Name: </label>
             <input formControlName="firstName" type="text" />
+
+            <div 
+                *ngIf="firstName!.invalid && firstName!.touched" 
+                class="alert alert-danger">
+                <div *ngIf="firstName!.errors!.required || firstName!.errors!.notOnlyWhitespaces">
+                    First name is required
+                </div>
+            </div>
+
           </div>
 
           <div class="row">
             <label class="col-md-4"> Last Name: </label>
             <input formControlName="lastName" type="text" />
+
+            <div
+                *ngIf="lastName!.invalid && lastName!.touched" 
+                class="alert alert-danger">
+                <div *ngIf="lastName!.errors!.required || lastName!.errors!.notOnlyWhitespaces">
+                    Last name is required
+                </div>
+            </div>
           </div>
 
           <div class="row">
-            <label class="col-md-4"> Email Address: </label>
-            <input formControlName="emailAddress" type="text" />
+            <label class="col-md-4"> Email: </label>
+            <input formControlName="email" type="text" />
+
+            <div 
+                *ngIf="email!.invalid && email!.errors!.required && email!.touched" 
+                class="alert alert-danger">
+                Email is required
+            </div>
+
+            <div 
+                *ngIf="email!.invalid && email!.errors!.email && email!.touched" 
+                class="alert alert-danger">
+                Invalid email
+            </div>
           </div>
 
         </div>
@@ -34,16 +63,38 @@
                         [ngValue]="tempCountry"    
                     > {{tempCountry.name}} </option>
                 </select>
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="shippingAddressCountry!.invalid && shippingAddressCountry!.touched" 
+                    >
+                    Country is required
+                </div>
+
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Street: </label>
                 <input formControlName="street" type="text" />
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="shippingAddressStreet!.invalid && shippingAddressStreet!.touched" 
+                    >
+                    Address is required
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> City: </label>
                 <input formControlName="city" type="text" />
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="shippingAddressCity!.invalid && shippingAddressCity!.touched" 
+                    >
+                    City is required
+                </div>
             </div>
 
             <div class="row">
@@ -54,11 +105,25 @@
                         [ngValue]="tempState"
                         > {{tempState.name}} </option>
                 </select>
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="shippingAddressState!.invalid && shippingAddressState!.touched" 
+                    >
+                    State is required
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Zip code / Postal code: </label>
                 <input formControlName="zipCode" type="text" />
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="shippingAddressZipCode!.invalid && shippingAddressZipCode!.touched" 
+                    >
+                    Zip code is required
+                </div>
             </div>
         </div>
 
@@ -87,16 +152,37 @@
                         [ngValue]="tempCountry"
                     > {{tempCountry.name}} </option>
                 </select>
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="billingAddressCountry!.invalid && billingAddressCountry!.touched" 
+                    >
+                    Country is required
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Street: </label>
                 <input formControlName="street" type="text" />
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="billingAddressStreet!.invalid && billingAddressStreet!.touched" 
+                    >
+                    Street is required
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> City: </label>
                 <input formControlName="city" type="text" />
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="billingAddressCity!.invalid && billingAddressCity!.touched" 
+                    >
+                    City is required
+                </div>
             </div>
 
             <div class="row">
@@ -107,11 +193,25 @@
                         [ngValue]="tempState"
                         > {{tempState.name}} </option>
                 </select>
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="billingAddressState!.invalid && billingAddressState!.touched" 
+                    >
+                    State is required
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Zip code / Postal code: </label>
                 <input formControlName="zipCode" type="text" />
+
+                <div 
+                    class="alert alert-danger"
+                    *ngIf="billingAddressZipCode!.invalid && billingAddressZipCode!.touched" 
+                    >
+                    Zip code is required
+                </div>
             </div>
         </div>
 
@@ -120,25 +220,74 @@
 
             <div class="row">
                 <label class="col-md-4"> Card type: </label>
-                <select formControlName="cardType" type="text">
+                <select formControlName="type" type="text">
                     <option> Visa </option>
                     <option> Mastercard </option>
                 </select>
+
+                <div 
+                    *ngIf="creditCardType!.invalid && creditCardType!.touched"
+                    class="alert alert-danger"
+                    >
+                    <div *ngIf="creditCardType!.errors!.required">
+                        Credit card type is required
+                    </div>
+                </div>
+
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Card name: </label>
-                <input formControlName="cardName" type="text" />
+                <input formControlName="name" type="text" />
+
+                <div 
+                    *ngIf="creditCardName!.invalid && creditCardName!.touched"
+                    class="alert alert-danger"
+                    >
+                    <div *ngIf="creditCardName!.errors!.required || creditCardName!.errors!.notOnlyWhitespaces">
+                        Credit card name is required
+                    </div>
+
+                    <div *ngIf="creditCardName!.errors!.pattern">
+                        Credit card name must be just 16 digits
+                    </div>
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Card number: </label>
-                <input formControlName="cardNumber" type="text" />
+                <input formControlName="number" type="text" />
+
+                <div 
+                    *ngIf="creditCardNumber!.invalid && creditCardNumber!.touched"
+                    class="alert alert-danger"
+                    >
+                    <div *ngIf="creditCardNumber!.errors!.required || creditCardNumber!.errors!.notOnlyWhitespaces">
+                        Credit card number is required
+                    </div>
+
+                    <div *ngIf="creditCardNumber!.errors!.pattern">
+                        Credit card number must be just 16 digits
+                    </div>
+                </div>
             </div>
 
             <div class="row">
                 <label class="col-md-4"> Security code: </label>
                 <input formControlName="securityCode" type="text" />
+
+                <div 
+                    *ngIf="creditCardSecurityCode!.invalid && creditCardSecurityCode!.touched"
+                    class="alert alert-danger"
+                    >
+                    <div *ngIf="creditCardSecurityCode!.errors!.required || creditCardSecurityCode!.errors!.notOnlyWhitespaces">
+                        Security code is required
+                    </div>
+
+                    <div *ngIf="creditCardSecurityCode!.errors!.pattern">
+                        Security code must be just 3 digits
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -150,6 +299,14 @@
                     <option disabled></option>
                     <option *ngFor="let month of creditCardMonths"> {{month}} </option>
                 </select>
+
+                <div
+                    *ngIf="creditCardExpirationMonth!.invalid && creditCardExpirationMonth!.touched"
+                    class="alert alert-danger">
+                    <div *ngIf="creditCardExpirationMonth!.errors!.required">
+                        Expiration month is required
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -162,6 +319,14 @@
                     <option disabled></option>
                     <option *ngFor="let year of creditCardYears"> {{year}} </option>
                 </select>
+
+                <div
+                    *ngIf="creditCardExpirationYear!.invalid && creditCardExpirationYear!.touched"
+                    class="alert alert-danger">
+                    <div *ngIf="creditCardExpirationYear!.errors!.required">
+                        Expiration year is required
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -176,7 +341,7 @@
         </div>
 
         <div class="text-center">
-            <button class="btn"> Purchase </button>
+            <button class="btn btn-primary"> Purchase </button>
         </div>
 
       </form>
