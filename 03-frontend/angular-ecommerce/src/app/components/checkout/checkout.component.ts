@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { FormService } from 'src/app/services/form.service';
-import { CartService } from '../cart-status/cart.service';
+import { CartService, CartStatus } from '../cart-status/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -40,8 +40,6 @@ export class CheckoutComponent implements OnInit {
   get billingAddressZipCode() { return this.checkoutForm.get('billingAddress.zipCode'); }
 
 
-
-
   constructor(
     private formBuilder: FormBuilder,
     private cartService: CartService,
@@ -50,9 +48,16 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.connectCodeToForm();
 
-    const status = this.cartService.processCartStatus();
-    this.totalQuantity = status.itemsQuantity;
-    this.totalPrice = status.itemsPrice;
+    this.cartService.cartStatusSubject.subscribe(
+      (status: CartStatus) => {
+        this.totalQuantity = status.itemsQuantity;
+        this.totalPrice = status.itemsPrice;
+      }
+    )
+
+    // const status = this.cartService.processCartStatus();
+    // this.totalQuantity = status.itemsQuantity;
+    // this.totalPrice = status.itemsPrice;
 
     this.populateCreditCardYears();
     this.populateCreditCardMonths(new Date().getMonth());

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { CartItem } from "src/app/common/cart-item";
 
 export interface CartStatus {
@@ -12,7 +12,7 @@ export class CartService {
     cartItems: CartItem[] = [];
 
     // subject is emitting event when a status is being changed
-    cartStatusSubject = new Subject<CartStatus>();
+    cartStatusSubject = new BehaviorSubject<CartStatus>({itemsQuantity: 0, itemsPrice: 0});
 
     addItem(item: CartItem) {
         const itemAlreadyAdded = this.cartItems.find(currItem => currItem.id === item.id);
