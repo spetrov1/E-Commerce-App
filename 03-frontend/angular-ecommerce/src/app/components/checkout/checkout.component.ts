@@ -1,7 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Address } from 'src/app/common/address';
 import { Country } from 'src/app/common/country';
+import { Customer } from 'src/app/common/customer';
+import { Order } from 'src/app/common/order';
+import { OrderItem } from 'src/app/common/order-item';
+import { Purchase } from 'src/app/common/purchase';
 import { State } from 'src/app/common/state';
+import { CheckoutResponse, CheckoutService } from 'src/app/services/checkout.service';
 import { FormService } from 'src/app/services/form.service';
 import { CartService, CartStatus } from '../cart-status/cart.service';
 
@@ -43,7 +51,9 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private cartService: CartService,
-    private formService: FormService) { }
+    private formService: FormService,
+    private checkoutService: CheckoutService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.connectCodeToForm();
@@ -178,7 +188,61 @@ export class CheckoutComponent implements OnInit {
   get creditCardExpirationYear() { return this.checkoutForm.get('creditCard.expirationYear'); }
 
   onSubmit() {
-    this.checkoutForm.markAllAsTouched();
+    if (this.checkoutForm.invalid) {
+      this.checkoutForm.markAllAsTouched();
+    }
+    else {
+      const purchase = new Purchase();
+
+      // customer
+      // const customer: Customer = JSON.parse(JSON.stringify(this.checkoutForm.get('customer')!.value));
+      const customer: Customer = this.checkoutForm.get('customer')!.value;
+
+      // shipping address
+      const shippingAddress: Address = this.checkoutForm.get('shippingAddress')!.value;
+      shippingAddress.country = JSON.parse(JSON.stringify(shippingAddress.country)).name;
+      shippingAddress.state = JSON.parse(JSON.stringify(shippingAddress.state)).name;
+
+      // billing address
+      const billingAddress: Address = this.checkoutForm.get('billingAddress')!.value;
+      billingAddress.country = JSON.parse(JSON.stringify(billingAddress.country)).name;
+      billingAddress.state = JSON.parse(JSON.stringify(billingAddress.state)).name;
+
+      // order
+      const order = new Order();
+      const currStatus = this.cartService.cartStatusSubject.getValue();
+      order.totalPrice = currStatus.itemsPrice;
+      order.totalQuantity = currStatus.itemsQuantity;
+
+      // order items
+      const cartItems = this.cartService.cartItems;
+      const orderItems: OrderItem[] = cartItems.map(cartItem => new OrderItem(cartItem));
+
+      purchase.customer = customer;
+      purchase.shippingAddress = shippingAddress;
+      purchase.billingAddress = billingAddress;
+      purchase.order = order;
+      purchase.orderItems = orderItems;
+
+      this.checkoutService.placeOrder(purchase).subscribe(
+        this.onPlaceOrderSuccess.bind(this),
+        this.onPlaceOrderFail
+      );
+    }
+    
+  }
+
+  onPlaceOrderSuccess(successData: CheckoutResponse) {
+    alert(`Order created with tracking number: ${successData.orderTrackingNumber}`);
+    this.cartService.cartStatusSubject.next({
+      itemsPrice: 0,
+      itemsQuantity: 0
+    });
+    this.router.navigateByUrl("/products");
+  }
+
+  onPlaceOrderFail(error: HttpErrorResponse) {
+    alert("Error occurred");
   }
 
 }
