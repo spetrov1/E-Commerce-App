@@ -1,5 +1,11 @@
 # Full stack app - learning objective
 
+#### To start the app:
+1. Run all 4 db scripts from db-scripts folder
+2. Run ApiApplication.class // Spring Boot App
+3. ng serve // Angular app
+
+### Description:
 ## Spring Boot Rest App + Angular Front End App
 
 #### Features:
