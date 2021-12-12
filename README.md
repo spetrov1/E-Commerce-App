@@ -1,6 +1,6 @@
 # Full stack app - learning objective
 
-## Spring Boot Rest App + Angular 
+## Spring Boot Rest App + Angular Front End App
 
 #### Features:
 * Reviewing all available products in db
