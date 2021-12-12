@@ -5,8 +5,8 @@
 2. Run ApiApplication.class // Spring Boot App
 3. ng serve // Angular app
 
-### Description:
-## Spring Boot Rest App + Angular Front End App
+## Description:
+### Spring Boot Rest App + Angular Front End App
 
 #### Features:
 * Reviewing all available products in db
