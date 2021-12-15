@@ -1,0 +1,10 @@
+FROM mysql
+
+ADD 02-create-products.sql /docker-entrypoint-initdb.d/02-create-products.sql
+ADD 04-create-order-tables.sql /docker-entrypoint-initdb.d/04-create-order-tables.sql
+ADD countries-and-states.sql /docker-entrypoint-initdb.d/countries-and-states.sql
+ADD refresh-database-with-100-products.sql /docker-entrypoint-initdb.d/refresh-database-with-100-products.sql
+
+RUN chmod -R 775 /docker-entrypoint-initdb.d
+
+ENV MYSQL_ROOT_PASSWORD mypass
