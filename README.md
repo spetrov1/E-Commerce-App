@@ -5,6 +5,22 @@
 2. Run ApiApplication.class // Spring Boot App
 3. ng serve // Angular app
 
+#### To start the app via Docker:
+
+##### Init the db via docker
+1.1 Navigate terminal to folder 'db'
+1.2 Run 'docker build -t mysql-init-img .'
+1.3 Run 'docker run --name mysql-init --rm -d -p 3306:3306 mysql-init-img'
+
+##### Starting the Spring backend app
+2.1 Navigate terminal to folder '02-backend/rest'
+2.2 Run 'docker build -t e-app-img .'
+2.3 Run 'docker run --name e-app -p 8080:8080 --rm e-app-img'
+
+##### Starting the Angular app via Docker:
+TODO
+3. ng serve (for now without a Docker, before running navigate to Angular app root directory)
+
 ### Description:
 ## Spring Boot Rest App + Angular Front End App
 
