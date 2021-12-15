@@ -9,8 +9,8 @@
 
 ##### Init the db via docker
 1.1 Navigate terminal to folder 'db'
-1.2 Run 'docker build -t mysql-init-img .'
-1.3 Run 'docker run --name mysql-init --rm -d -p 3306:3306 mysql-init-img'
+1.2 Run 'docker build -t mysql-db-img .'
+1.3 Run 'docker run --name mysql-db --rm -d -p 3306:3306 mysql-db-img'
 
 ##### Starting the Spring backend app
 2.1 Navigate terminal to folder '02-backend/rest'
