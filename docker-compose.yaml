@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  mysql-db:
+    build:
+      context: ./db
+      dockerfile: dockerfile
+      # image: 
+    ports:
+      - "3306:3306"
+    # network: 
+    # volumes: # data persistence of db table data, try it
+    # services of a docker compose are by default in one network
+
+
+  spring-backend:
+    build:
+      context: ./02-backend/rest
+      dockerfile: dockerfile
+
+    ports:
+      - "8080:8080"
+
+    # volumes # bindMounts for code sync
