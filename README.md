@@ -1,15 +1,15 @@
 # Full stack app - learning objective
 
-#### To start the app via Docker:
+### To start the app via Docker:
 
-##### Init the db & Start Spring Backend via docker-compose
-1. Run 'docker-compose up' in the root directory
+#### Init the db & Start Spring Backend via docker-compose
+* Run 'docker-compose up' in the root directory
 
-##### Starting the Angular app (without Docker, required Angluar CLI):
-2.1 Navigate terminal to Angular app root directory
-2.2 Run 'ng serve'
+#### Starting the Angular app (without Docker, required Angluar CLI):
+* Navigate terminal to Angular app root directory
+* Run 'ng serve'
 
-##### Check the App
+#### Check the App
 * Visit 'http://localhost:4200'
 
 Note (TODO type): Angular is not dockerized because of uploading Angular app onto nginx server inside a container has some problem with containers names resolving. For example when querying the spring backend, the DNS resolving is not done successfully.
