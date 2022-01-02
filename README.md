@@ -7,6 +7,7 @@
 
 #### Starting the Angular app (without Docker, required Angluar CLI):
 * Navigate terminal to Angular app root directory
+* Run 'npm install --save-dev @angular-devkit/build-angular'
 * Run 'ng serve'
 
 #### Check the App
@@ -16,7 +17,7 @@ Note (TODO type): Angular is not dockerized because of uploading Angular app ont
 
 
 #### To start the app (without Docker):
-1. Run all 4 db scripts from db-scripts folder
+1. Run all 4 db scripts from db folder
 2. Run ApiApplication.class // Spring Boot App
 3. ng serve // Angular app
 
